@@ -1,0 +1,19 @@
+{
+  "name": "microservice-project-assignment",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev:user": "cd services/user && yarn dev",
+    "dev:auth": "cd services/auth && yarn dev",
+    "dev:booking": "cd services/booking && yarn dev",
+    "dev:email": "cd services/email && yarn dev",
+    "dev:all":"concurrently \"yarn dev:user\" \"yarn dev:email\" \"yarn dev:auth\" \"yarn dev:booking\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
