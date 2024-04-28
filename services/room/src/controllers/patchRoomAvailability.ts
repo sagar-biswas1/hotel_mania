@@ -9,7 +9,6 @@ import { z } from 'zod';
 const updateRoomAvailability = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
-console.log(req.body)
 
       const validationResult = RoomAvailabilitySchema.safeParse(req.body);
   

@@ -71,6 +71,26 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
+  # mongodb:
+  #   image: mongo:latest
+  #   container_name: mongodb
+  #   restart: on-failure
+  #   ports:
+  #     - "27017:27017"
+  #   volumes:
+  #     - mongodb_data:/data/db
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: root
+  #     MONGO_INITDB_ROOT_PASSWORD: example
+  #     MONGO_INITDB_REPLICA_SET_NAME: rs0
+  #   command: "mongod --replSet rs0"  # Initialize the replica set
+  #   healthcheck:
+  #     test: ["CMD", "mongo", "--eval", "rs.status()"]
+  #     interval: 30s
+  #     timeout: 30s
+  #     retries: 3
+
+
   # ------------------------------------------
 
 volumes:

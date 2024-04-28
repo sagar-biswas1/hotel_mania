@@ -5,6 +5,7 @@ import { AccessTokenSchema } from '@/schemas';
 
 const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
 	try {
+		console.log("sdasdas")
 		// Validate the request body
 		const parsedBody = AccessTokenSchema.safeParse(req.body);
 		if (!parsedBody.success) {

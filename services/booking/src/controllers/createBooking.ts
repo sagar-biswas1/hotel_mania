@@ -12,6 +12,7 @@ import {
 
 const createBooking = async (req: Request, res: Response): Promise<void> => {
   try {
+    
     const newBody = { ...req.body };
 
     newBody.bookingDate = new Date(newBody.bookingDate).toISOString();
@@ -51,6 +52,7 @@ const createBooking = async (req: Request, res: Response): Promise<void> => {
     });
     res.status(201).json(savedBooking);
   } catch (error) {
+    console.log(error)
     if (error instanceof z.ZodError) {
       // Zod validation error
       res.status(400).json({ message: error.errors });

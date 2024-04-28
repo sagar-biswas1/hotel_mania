@@ -1,0 +1,116 @@
+{
+    "services":{
+        "room":{
+            "url":"http://localhost:4010",
+            "routes":[
+                {
+                    "path":"/rooms",
+                    "methods":["GET"],
+                    "middlewares":[]
+                },
+                {
+                    "path":"/room/:id",
+                    "methods":["GET"],
+                    "middlewares":[]
+                },
+                {
+                    "path":"/room",
+                    "methods":["POST"],
+                    "middlewares":["auth"]
+                },
+                {
+                    "path":"/room/:id",
+                    "methods":["PUT"],
+                    "middlewares":["auth","varifyAdmin"]
+                }
+            ]
+        },
+        "booking":{
+            "url":"http://localhost:4008",
+            "routes":[
+                {
+                    "path":"/booking",
+                    "methods":["GET"],
+                    "middlewares":["auth","varifyAdmin"]
+                },
+                {
+                    "path":"/booking/:id",
+                    "methods":["GET"],
+                    "middlewares":[]
+                },
+                {
+                    "path":"/booking",
+                    "methods":["POST"],
+                    "middlewares":["auth"]
+                },
+                {
+                    "path":"/booking/:id",
+                    "methods":["PUT"],
+                    "middlewares":["auth","varifyAdmin"]
+                },
+                {
+                    "path":"/booking/:id",
+                    "methods":["DELETE"],
+                    "middlewares":["auth","varifyAdmin"]
+                }
+            ]
+        },
+        "auth": {
+            "url": "http://localhost:4003",
+            "routes": [
+              {
+                "path": "/auth/register",
+                "methods": [
+                  "post"
+                ],
+                "middlewares": []
+              },
+              {
+                "path": "/auth/login",
+                "methods": [
+                  "post"
+                ],
+                "middlewares": []
+              },
+              {
+                "path": "/auth/verify-email",
+                "methods": [
+                  "post"
+                ],
+                "middlewares": []
+              },
+              {
+                "path": "/auth/verify-token",
+                "methods": [
+                  "post"
+                ],
+                "middlewares": []
+              }
+            ]
+          },
+        "user": {
+            "url": "http://localhost:4000",
+            "routes": [
+              {
+                "path": "/users/:id",
+                "methods": [
+                  "get"
+                ],
+                "middlewares": [
+                  "auth"
+                ]
+              },
+              {
+                "path": "/users/:id",
+                "methods": [
+                  "PUT"
+                ],
+                "middlewares": [
+                  "auth"
+                ]
+              }
+            ]
+          }
+
+    }
+}
