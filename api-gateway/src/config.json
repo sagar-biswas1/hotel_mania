@@ -66,6 +66,13 @@
                 "middlewares": []
               },
               {
+                "path": "/auth/update-user-role/:id",
+                "methods": [
+                  "patch"
+                ],
+                "middlewares": ["auth"]
+              },
+              {
                 "path": "/auth/login",
                 "methods": [
                   "post"
@@ -95,6 +102,24 @@
                 "path": "/users/:id",
                 "methods": [
                   "get"
+                ],
+                "middlewares": [
+                  "auth"
+                ]
+              },
+              {
+                "path": "/users",
+                "methods": [
+                  "get"
+                ],
+                "middlewares": [
+                  "auth"
+                ]
+              },
+              {
+                "path": "/users/:id",
+                "methods": [
+                  "delete"
                 ],
                 "middlewares": [
                   "auth"

@@ -2,7 +2,7 @@ import { Express, Request, Response } from "express";
 import config from "./config.json";
 import axios from "axios";
 import middlewares from "./middlewares";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
 export const createHandler = (
   hostName: string,
@@ -16,13 +16,13 @@ export const createHandler = (
         Object.keys(req.params).forEach((param) => {
           url = url.replace(`:${param}`, req.params[param]);
         });
-console.log({url})
+      console.log({ url });
       const { data } = await axios({
         method,
         url,
         data: req.body,
         headers: {
-          origin: "http://localhost:8081",
+          origin: process.env.API_GATEWAY_URL,
           "x-user-id": req.headers["x-user-id"] || "",
           "x-user-email": req.headers["x-user-email"] || "",
           "x-user-name": req.headers["x-user-name"] || "",
@@ -43,24 +43,22 @@ console.log({url})
   };
 };
 
-
 export const getMiddlewares = (names: string[]) => {
-	return names.map((name) => middlewares[name]);
+  return names.map((name) => middlewares[name]);
 };
 
-
 export const configureRoutes = (app: Express) => {
-    Object.entries(config.services).forEach(([_name,service])=>{
-        const hostname = service.url as string ;
+  Object.entries(config.services).forEach(([_name, service]) => {
+    const hostname = service.url as string;
 
-        service.routes.forEach(route=>{
-            route.methods.forEach(method=>{
-                const endpoint = `/api${route.path}`;
-                const middleware = getMiddlewares(route.middlewares);
-				const handler = createHandler(hostname, route.path, method);
-                console.log(endpoint,method.toLowerCase())
-				app[method.toLowerCase()](endpoint, middleware, handler);
-            })
-        })
-    })
-}
+    service.routes.forEach((route) => {
+      route.methods.forEach((method) => {
+        const endpoint = `/api${route.path}`;
+        const middleware = getMiddlewares(route.middlewares);
+        const handler = createHandler(hostname, route.path, method);
+        console.log(endpoint, method.toLowerCase());
+        app[method.toLowerCase()](endpoint, middleware, handler);
+      });
+    });
+  });
+};

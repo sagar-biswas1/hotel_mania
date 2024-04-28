@@ -2,7 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import morgan from 'morgan';
-import { createUser, getUserById, updateUser } from './controllers';
+import { createUser, getUserById, updateUser,getUsers,deleteUser } from './controllers';
 
 dotenv.config();
 
@@ -15,22 +15,30 @@ app.get('/health', (_req, res) => {
 	res.status(200).json({ status: 'UP' });
 });
 
-// app.use((req, res, next) => {
-// 	const allowedOrigins = ['http://localhost:8081', 'http://127.0.0.1:8081'];
-// 	const origin = req.headers.origin || '';
-
-// 	if (allowedOrigins.includes(origin)) {
-// 		res.setHeader('Access-Control-Allow-Origin', origin);
-// 		next();
-// 	} else {
-// 		res.status(403).json({ message: 'Forbidden' });
-// 	}
-// });
+app.use((req, res, next) => {
+	const ALLOWED_ORIGINS_STR = process.env.ALLOWED_ORIGINS;
+  
+	const allowedOrigins = ALLOWED_ORIGINS_STR
+	  ? ALLOWED_ORIGINS_STR.split(",").map(url=>url.trim())
+	  : [];
+  
+	const origin = req.headers.origin || "";
+	console.log(req.headers)
+	console.log(allowedOrigins, {origin});
+	if (allowedOrigins.includes(origin)) {
+	  res.setHeader("Access-Control-Allow-Origin", origin);
+	  next();
+	} else {
+	  res.status(403).json({ message: "Forbidden" });
+	}
+  });
 
 // routes
 app.get('/users/:id', getUserById);
 app.post('/users', createUser);
 app.put('/users/:id', updateUser);
+app.delete('/users/:id', deleteUser);
+app.get('/users', getUsers);
 
 // 404 handler
 app.use((_req, res) => {

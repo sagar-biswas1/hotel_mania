@@ -35,7 +35,23 @@ app.get('/health', (_req, res) => {
 	res.status(200).json({ status: 'UP' });
 });
 
-// Routes
+app.use((req, res, next) => {
+	const ALLOWED_ORIGINS_STR = process.env.ALLOWED_ORIGINS;
+  
+	const allowedOrigins = ALLOWED_ORIGINS_STR
+	  ? ALLOWED_ORIGINS_STR.split(",").map(url=>url.trim())
+	  : [];
+  
+	const origin = req.headers.origin || "";
+	console.log(req.headers)
+	console.log(allowedOrigins, {origin});
+	if (allowedOrigins.includes(origin)) {
+	  res.setHeader("Access-Control-Allow-Origin", origin);
+	  next();
+	} else {
+	  res.status(403).json({ message: "Forbidden" });
+	}
+  });
 // Routes
 app.get('/rooms', getRooms);
 app.post('/room', createRoom);
