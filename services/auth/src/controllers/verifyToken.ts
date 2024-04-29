@@ -5,7 +5,7 @@ import { AccessTokenSchema } from '@/schemas';
 
 const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		console.log("sdasdas")
+		
 		// Validate the request body
 		const parsedBody = AccessTokenSchema.safeParse(req.body);
 		if (!parsedBody.success) {
@@ -13,10 +13,10 @@ const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
 		}
 
 		
-		console.log("JWT_SECRET", process.env.JWT_SECRET)
+		
 
 		const { accessToken } = parsedBody.data;
-		const decoded = jwt.verify(accessToken, process.env.JWT_SECRET as string);
+		const decoded = await jwt.verify(accessToken, process.env.JWT_SECRET as string);
 
 		const user = await prisma.user.findUnique({
 			where: { id: (decoded as any).userId },
@@ -34,6 +34,7 @@ const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
 
 		return res.status(200).json({ message: 'Authorized', user });
 	} catch (error) {
+		
 		next(error);
 	}
 };

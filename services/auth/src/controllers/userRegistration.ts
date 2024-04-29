@@ -67,7 +67,15 @@ const userRegistration = async (
       authUserId: user.id,
       name: user.name,
       email: user.email,
-    });
+    },
+    {
+      headers: {
+        ip: req.ip,
+        'user-agent': req.headers['user-agent'],
+        origin: process.env.BASE_URL_AUTH,
+      },
+    }
+  );
     console.log("user profile created successfully");
     // generate verification code
     const code = generateVerificationCode();

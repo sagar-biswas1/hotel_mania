@@ -9,7 +9,7 @@ const receiveFromQueue = async (
 	const connection = await amqp.connect('amqp://localhost');
 	const channel = await connection.createChannel();
 
-	const exchange = 'order';
+	const exchange = 'booking';
 	await channel.assertExchange(exchange, 'direct', { durable: true });
 
 	const q = await channel.assertQueue(queue, { durable: true });
@@ -19,6 +19,7 @@ const receiveFromQueue = async (
 		q.queue,
 		(msg) => {
 			if (msg) {
+				console.log("from line 22")
 				callback(msg.content.toString());
 			}
 		},
@@ -27,16 +28,17 @@ const receiveFromQueue = async (
 };
 
 receiveFromQueue('send-email', async (msg) => {
+	console.log("hello from email")
 	const parsedBody = JSON.parse(msg);
-
-	const { userEmail, grandTotal, id } = parsedBody;
+console.log(parsedBody)
+	const { guestEmail, _id } = parsedBody;
 	const from = defaultSender;
-	const subject = 'Order Confirmation';
-	const body = `Thank you for your order. Your order id is ${id}. Your order total is $${grandTotal}`;
+	const subject = 'Booking Confirmation';
+	const body = `Thank you for your booking. Your booking id is ${_id}.`;
 
 	const emailOption = {
 		from,
-		to: userEmail,
+		to: guestEmail,
 		subject,
 		text: body,
 	};
@@ -51,10 +53,10 @@ receiveFromQueue('send-email', async (msg) => {
 	await prisma.email.create({
 		data: {
 			sender: from,
-			recipient: userEmail,
-			subject: 'Order Confirmation',
+			recipient: guestEmail,
+			subject: 'Booking Confirmation',
 			body,
-			source: 'OrderConfirmation',
+			source: 'BookingConfirmation',
 		},
 	});
 	console.log('Email sent');

@@ -29,7 +29,23 @@ app.get('/health', (_req, res) => {
 	res.status(200).json({ status: 'UP' });
 });
 
-// Routes
+app.use((req, res, next) => {
+	const ALLOWED_ORIGINS_STR = process.env.ALLOWED_ORIGINS;
+  
+	const allowedOrigins = ALLOWED_ORIGINS_STR
+	  ? ALLOWED_ORIGINS_STR.split(",").map(url=>url.trim())
+	  : [];
+  
+	const origin = req.headers.origin || "";
+	// console.log(req.headers)
+	// console.log(allowedOrigins, {origin});
+	if (allowedOrigins.includes(origin)) {
+	  res.setHeader("Access-Control-Allow-Origin", origin);
+	  next();
+	} else {
+	  res.status(403).json({ message: "Forbidden" });
+	}
+  });
 // Routes
 app.get('/booking', getBookings);
 app.post('/booking', createBooking);
@@ -42,6 +58,8 @@ app.get('/booking/:id', getBookingById);
 app.use((_req, res) => {
 	res.status(404).json({ message: 'Not found' });
 });
+
+
 
 // Error handler
 app.use((err, _req, res, _next) => {

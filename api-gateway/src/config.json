@@ -19,6 +19,11 @@
                     "middlewares":["auth"]
                 },
                 {
+                  "path":"/room-availability/:id",
+                  "methods":["PATCH"],
+                  "middlewares":["auth"]
+              },
+                {
                     "path":"/room/:id",
                     "methods":["PUT"],
                     "middlewares":["auth","varifyAdmin"]

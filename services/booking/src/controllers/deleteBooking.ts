@@ -29,7 +29,14 @@ const deleteBooking = async (req: Request, res: Response): Promise<void> => {
       return;
     }
     const { data } = await axios.get(
-      `${ROOM_DETAILS}/${bookingDetails.roomID}`
+      `${ROOM_DETAILS}/${bookingDetails.roomID}`,
+      {
+        headers: {
+          ip: req.ip,
+          'user-agent': req.headers['user-agent'],
+          origin: process.env.BASE_URL_BOOKING,
+        }
+      }
     );
 
     const generateDateRange = () => {
@@ -48,10 +55,17 @@ const deleteBooking = async (req: Request, res: Response): Promise<void> => {
     ).sort((a, b) => {
       return new Date(a).getTime() -new Date(b).getTime(); // Sort based on timestamp
     });;
-
+// console.log({ origin: process.env.BASE_URL_BOOKING,})
     await axios.patch(
       `${UPDATE_ROOM_AVAILABLE_DATES}/${bookingDetails.roomID}`,
-      { dates: updatedAvailableDates }
+      { dates: updatedAvailableDates },
+      {
+        headers: {
+          ip: req.ip,
+          'user-agent': req.headers['user-agent'],
+          origin: process.env.BASE_URL_BOOKING,
+        }
+      }
     );
 
     const deletedOrder = await Booking.findByIdAndDelete(bookingId);
@@ -63,6 +77,7 @@ const deleteBooking = async (req: Request, res: Response): Promise<void> => {
 
     res.status(200).json({ message: "Booking deleted successfully" });
   } catch (error) {
+    // console.log(error)
     res.status(500).json({ message: (error as Error).message });
   }
 };

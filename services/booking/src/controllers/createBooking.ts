@@ -9,23 +9,45 @@ import {
   ROOM_DETAILS,
   UPDATE_ROOM_AVAILABLE_DATES,
 } from "../config";
+import sendToQueue from "../queue";
 
 const createBooking = async (req: Request, res: Response): Promise<void> => {
   try {
-    
     const newBody = { ...req.body };
+    const { data } = await axios.get(`${ROOM_DETAILS}/${newBody.roomID}`, {
+      headers: {
+        ip: req.ip,
+        "user-agent": req.headers["user-agent"],
+        origin: process.env.BASE_URL_BOOKING,
+      },
+    });
+    // newBody.bookingDate = new Date(newBody.bookingDate).toISOString();
+    // newBody.checkInDate = new Date(newBody.checkInDate).toISOString();
+    // newBody.checkOutDate = new Date(newBody.checkOutDate).toISOString();
+    const checkInDate = new Date(newBody.checkInDate).toISOString();
+    const checkOutDate = new Date(newBody.checkOutDate).toISOString();
+
+    // Check if the check-in date is available in the availability array
+    const isCheckInDateAvailable = data.availability.some(
+      (availableDate) => new Date(availableDate).toISOString() === checkInDate
+    );
+
+    if (!isCheckInDateAvailable) {
+      res.status(400).json({
+        message: "Check-in date is not available.",
+      });
+
+      return;
+    }
 
     newBody.bookingDate = new Date(newBody.bookingDate).toISOString();
-    newBody.checkInDate = new Date(newBody.checkInDate).toISOString();
-    newBody.checkOutDate = new Date(newBody.checkOutDate).toISOString();
-
+    newBody.checkInDate = checkInDate;
+    newBody.checkOutDate = checkOutDate;
     const parsedBody = BookingCreateSchema.parse(newBody);
     // parsedBody.orderDate= new Date();
     // parsedBody.deliveryDate= new Date();
     const booking = new Booking(parsedBody);
     const savedBooking = await booking.save();
-
-    const { data } = await axios.get(`${ROOM_DETAILS}/${savedBooking.roomID}`);
 
     // Utility function to remove dates within a range
     const restDates = () => {
@@ -39,20 +61,28 @@ const createBooking = async (req: Request, res: Response): Promise<void> => {
       });
     };
 
-     await axios.patch(
+    await axios.patch(
       `${UPDATE_ROOM_AVAILABLE_DATES}/${savedBooking.roomID}`,
-      { dates: restDates() }
+      { dates: restDates() },
+      {
+        headers: {
+          ip: req.ip,
+          "user-agent": req.headers["user-agent"],
+          origin: process.env.BASE_URL_BOOKING,
+        },
+      }
     );
 
-    await axios.post(`${EMAIL_SERVICE}/emails/send`, {
-      recipient: savedBooking.guestEmail,
-      subject: "Booking Confirmed",
-      body: `Your reservation is successfull for room id ${savedBooking.roomID} . And the reservation date is ${savedBooking.checkInDate} - ${savedBooking.checkOutDate}`,
-      source: "user-booking",
-    });
+    // await axios.post(`${EMAIL_SERVICE}/emails/send`, {
+    //   recipient: savedBooking.guestEmail,
+    //   subject: "Booking Confirmed",
+    //   body: `Your reservation is successfull for room id ${savedBooking.roomID} . And the reservation date is ${savedBooking.checkInDate} - ${savedBooking.checkOutDate}`,
+    //   source: "user-booking",
+    // });
+    sendToQueue("send-email", JSON.stringify(savedBooking));
     res.status(201).json(savedBooking);
   } catch (error) {
-    console.log(error)
+    console.log(error);
     if (error instanceof z.ZodError) {
       // Zod validation error
       res.status(400).json({ message: error.errors });

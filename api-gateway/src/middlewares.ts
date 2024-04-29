@@ -41,7 +41,8 @@ const auth = async (req: Request, res: Response, next: NextFunction) => {
 };
 
  const varifyAdmin =(req: Request, res: Response, next: NextFunction)=>{
-   if(req.headers["x-user-role"]!=="user"){
+	console.log(req.headers["x-user-role"])
+   if(req.headers["x-user-role"]!=="USER"){
         return res.status(401).json({
             message:"Unauthorized...."
         })
