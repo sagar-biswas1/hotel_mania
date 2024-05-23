@@ -72,53 +72,6 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
-  # auth-service:
-  #   build:
-  #     context: ./services/auth
-  #   environment:
-  #     DATABASE_URL: postgresql://postgres:postgres@postgres:5432/auth_db?schema=public
-  #     JWT_SECRET: My_Secret_Key
-  #     BASE_URL_AUTH: http://localhost:4003
-  #     USER_SERVICE_URL: http://localhost:4000
-  #     EMAIL_SERVICE_URL: http://localhost:4005
-  #   depends_on:
-  #     - postgres
-  #   ports:
-  #     - "4003:4003"
-   
-  # user-service:
-  #   build:
-  #     context: ./services/user
-  #   environment:
-  #     DATABASE_URL: postgresql://postgres:postgres@postgres:5432/user_db?schema=public
-  #     JWT_SECRET: My_Secret_Key
-  #     BASE_URL_USER: http://localhost:4000
-  #     USER_SERVICE_URL: http://localhost:4000
-  #     EMAIL_SERVICE_URL: http://localhost:4005
-  #   depends_on:
-  #     - postgres
-  #   ports:
-  #     - "4000:4000"
-  
-  # mongodb:
-  #   image: mongo:latest
-  #   container_name: mongodb
-  #   restart: on-failure
-  #   ports:
-  #     - "27017:27017"
-  #   volumes:
-  #     - mongodb_data:/data/db
-  #   environment:
-  #     MONGO_INITDB_ROOT_USERNAME: root
-  #     MONGO_INITDB_ROOT_PASSWORD: example
-  #     MONGO_INITDB_REPLICA_SET_NAME: rs0
-  #   command: "mongod --replSet rs0"  # Initialize the replica set
-  #   healthcheck:
-  #     test: ["CMD", "mongo", "--eval", "rs.status()"]
-  #     interval: 30s
-  #     timeout: 30s
-  #     retries: 3
-
 
   # ------------------------------------------
 networks:
@@ -132,6 +85,6 @@ volumes:
   rabbitmq_data:
   kong_data:
   mongodb_data:
-  auth-service:
+  
 
 

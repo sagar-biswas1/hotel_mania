@@ -8,7 +8,7 @@ import { z } from 'zod';
 // Add a new room
 const createRoom = async (req: Request, res: Response) => {
     try {
-console.log("hello")
+console.log("hello world")
       // Validate request data
       const validationResult = RoomCreateSchema.safeParse(req.body);
   

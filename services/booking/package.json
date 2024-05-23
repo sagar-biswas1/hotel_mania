@@ -1,10 +1,10 @@
 {
-  "name": "order",
+  "name": "booking",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node ./src/index.ts",
+    "dev": "ts-node -r tsconfig-paths/register ./src/index.ts",
     "build": "tsc && tsc-alias",
     "test": "mocha",
     "test:watch": "mocha --watch test/**/*.test.js"
@@ -33,6 +33,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@babel/register": "^7.23.7"
+    "@babel/register": "^7.23.7",
+    "tsconfig-paths": "^4.2.0"
   }
 }

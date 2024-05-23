@@ -46,6 +46,8 @@ app.use((err, _req, res, _next) => {
 const port = process.env.PORT || 4005;
 const serviceName = process.env.SERVICE_NAME || 'Email-Service';
 
+
+
 app.listen(port, () => {
 	console.log(`${serviceName} is running on port ${port}`);
 });

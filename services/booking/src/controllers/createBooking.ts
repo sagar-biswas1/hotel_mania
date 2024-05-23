@@ -1,7 +1,6 @@
 import axios from "axios";
 import { BookingCreateSchema } from "../schemas";
 import { z } from "zod";
-// controllers/orderController.ts
 import { Request, Response } from "express";
 import Booking, { Booking as BookingModel } from "../models/Booking";
 import {

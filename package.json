@@ -5,11 +5,17 @@
   "main": "index.js",
   "scripts": {
     "dev:user": "cd services/user && yarn dev",
+    "dev:migrate-user-prisma":"cd services/user && yarn migrate:dev",
     "dev:auth": "cd services/auth && yarn dev",
+   
+    "dev:migrate-auth-prisma":"cd services/auth && yarn migrate:dev",
     "dev:room": "cd services/room && yarn dev",
     "dev:booking": "cd services/booking && yarn dev",
     "dev:email": "cd services/email && yarn dev",
-    "dev:all":"concurrently \"yarn dev:user\" \"yarn dev:email\" \"yarn dev:room\" \"yarn dev:auth\" \"yarn dev:booking\""
+    "dev:migrate-email-prisma":"cd services/email && yarn migrate:dev",
+    "dev:api-gateway": "cd api-gateway && yarn dev",
+    "dev:prisma-migrate-all":"concurrently \"yarn dev:migrate-user-prisma\" \"yarn dev:migrate-auth-prisma\" \"yarn dev:migrate-email-prisma\"",
+    "dev:all":"concurrently \"yarn dev:user\" \"yarn dev:email\" \"yarn dev:room\" \"yarn dev:auth\" \"yarn dev:booking\" \"yarn dev:api-gateway\""
   },
   "keywords": [],
   "author": "",
