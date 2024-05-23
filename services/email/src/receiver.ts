@@ -1,12 +1,15 @@
 import amqp from 'amqplib';
-import { defaultSender, transporter } from './config';
+import { QUEUE_URL, defaultSender, transporter } from './config';
 import prisma from './prisma';
+import dotenv from 'dotenv';
 
+dotenv.config();
 const receiveFromQueue = async (
 	queue: string,
 	callback: (message: string) => void
 ) => {
-	const connection = await amqp.connect('amqp://localhost');
+	console.log("inside receiveFromQueue")
+	const connection = await amqp.connect(QUEUE_URL);
 	const channel = await connection.createChannel();
 
 	const exchange = 'booking';

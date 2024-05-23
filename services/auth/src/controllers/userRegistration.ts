@@ -61,7 +61,7 @@ const userRegistration = async (
       },
     });
     console.log("User created: ", user);
-
+    console.log(`user service post url: -> ${USER_SERVICE}/users`)
     // create the user profile by calling the user service
     await axios.post(`${USER_SERVICE}/users`, {
       authUserId: user.id,
@@ -100,6 +100,7 @@ const userRegistration = async (
       user,
     });
   } catch (error) {
+    console.log("error ",error)
     next(error);
   }
 };
