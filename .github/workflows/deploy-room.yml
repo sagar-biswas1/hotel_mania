@@ -1,0 +1,35 @@
+name: Deploy Room Service
+
+on:
+  push:
+    paths:
+      - 'services/room/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20.12.0'
+
+    - name: Install dependencies
+      run: |
+        cd services/room
+        yarn install
+
+    - name: Build project
+      run: |
+        cd services/room
+        yarn build
+
+
+    - name: Deploy to Vercel
+      run: |
+        cd services/user
+        vercel --prod --token ${{ secrets.VERCEL_TOKEN }} --scope ${{ secrets.VERCEL_TEAM }} --yes
