@@ -55,25 +55,25 @@ app.get('/health', (_req, res) => {
 //   });
 
 
-app.use((req, res, next) => {
-  const ALLOWED_ORIGINS_STR = process.env.ALLOWED_ORIGINS;
+// app.use((req, res, next) => {
+//   const ALLOWED_ORIGINS_STR = process.env.ALLOWED_ORIGINS;
 
-  const allowedOrigins = ALLOWED_ORIGINS_STR
-    ? ALLOWED_ORIGINS_STR.split(",").map(url => url.trim())
-    : [];
+//   const allowedOrigins = ALLOWED_ORIGINS_STR
+//     ? ALLOWED_ORIGINS_STR.split(",").map(url => url.trim())
+//     : [];
 
-  const origin = req.headers.origin || "";
+//   const origin = req.headers.origin || "";
   
-  // Extract the base URL from the origin
-  const baseUrl = origin ? new URL(origin).origin : "";
+//   // Extract the base URL from the origin
+//   const baseUrl = origin ? new URL(origin).origin : "";
 
-  if (allowedOrigins.includes(baseUrl)) {
-    res.setHeader("Access-Control-Allow-Origin", baseUrl);
-    next();
-  } else {
-    res.status(403).json({ message: "Forbidden to access room..." });
-  }
-});
+//   if (allowedOrigins.includes(baseUrl)) {
+//     res.setHeader("Access-Control-Allow-Origin", baseUrl);
+//     next();
+//   } else {
+//     res.status(403).json({ message: "Forbidden to access room..." });
+//   }
+// });
 
 
 // Routes
