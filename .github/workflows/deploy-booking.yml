@@ -30,6 +30,12 @@ jobs:
 
 
     - name: Deploy to Vercel
+      env:
+        DATABASE_URL: ${{ secrets.DATABASE_URL_ROOM }}
+        ALLOWED_ORIGINS: ${{ secrets.ALLOWED_ORIGINS }}
+        QUEUE_URL: ${{ secrets.QUEUE_URL_EMAIL }}
+        UPDATE_ROOM_AVAILABLE_DATES: ${{ secrets.UPDATE_ROOM_AVAILABLE_DATES }}
+        BASE_URL_BOOKING: ${{ secrets.BOOKING_ENDPOINT }}
       run: |
         cd services/booking
         vercel --prod --token ${{ secrets.VERCEL_TOKEN }} --scope ${{ secrets.VERCEL_TEAM }} --yes
