@@ -1,0 +1,39 @@
+name: Deploy User Service
+
+on:
+  push:
+    paths:
+      - 'services/user/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20.12.0'
+
+    - name: Install dependencies
+      run: |
+        cd services/user
+        yarn install
+
+    - name: Build project
+      run: |
+        cd services/user
+        yarn build
+
+    - name: Run Prisma Migrations
+      run: |
+        cd services/user
+        yarn migrate:prod
+
+    - name: Deploy to Vercel
+      run: |
+        cd services/user
+        vercel --prod --token ${{ secrets.VERCEL_TOKEN }}
