@@ -58,3 +58,6 @@ const serviceName = process.env.SERVICE_NAME || 'User-Service';
 app.listen(port, () => {
 	console.log(`${serviceName} is running on port ${port}`);
 });
+
+
+export default app;

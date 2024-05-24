@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import prisma from '@/prisma'; // Import your Prisma instance
+import prisma from '../prisma'; // Import your Prisma instance
 
 // Delete user by ID
 const deleteUser = async (req: Request, res: Response, next: NextFunction) => {

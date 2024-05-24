@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { UserCreateSchema } from "@/schemas";
-import prisma from "@/prisma";
+import { UserCreateSchema } from "../schemas";
+import prisma from "../prisma";
 
 const createUser = async (req: Request, res: Response, next: NextFunction) => {
   try {

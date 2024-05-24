@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import prisma from '@/prisma';
+import prisma from '../prisma';
 import { User } from '@prisma/client';
 
 // /users/:id?field=id|authUserId

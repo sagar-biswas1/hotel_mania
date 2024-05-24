@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { UserUpdateSchema } from "@/schemas"; // Import your update schema
-import prisma from "@/prisma";
+import prisma from "../prisma";
 
 const updateUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
