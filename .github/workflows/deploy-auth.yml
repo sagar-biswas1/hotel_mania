@@ -30,7 +30,7 @@ jobs:
 
     - name: Run Prisma Migrations
       env:
-        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        DATABASE_URL: ${{ secrets.DATABASE_URL_AUTH }}
       run: |
         cd services/auth
         yarn migrate:prod
