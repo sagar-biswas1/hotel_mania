@@ -24,7 +24,7 @@ const updateUser = async (req: Request, res: Response, next: NextFunction) => {
     if (!existingUser) {
       return res.status(404).json({ message: "User not found" });
     }
-console.log("asdasd",parsedBody.data)
+// console.log("asdasd",parsedBody.data)
     // Update the user
     const updatedUser = await prisma.user.update({
       where: { id: userId },
