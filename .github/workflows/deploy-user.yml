@@ -38,4 +38,4 @@ jobs:
     - name: Deploy to Vercel
       run: |
         cd services/user
-        vercel --prod --token ${{ secrets.VERCEL_TOKEN }} --scope "oshan12345's projects" --confirm
+        vercel --prod --token ${{ secrets.VERCEL_TOKEN }} --scope "oshan12345s-projects" --confirm
