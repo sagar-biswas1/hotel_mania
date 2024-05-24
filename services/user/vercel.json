@@ -13,6 +13,5 @@
       "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
     }
   ],
-  "project": "user",
-  "org": "oshan12345s-projects"
+  "project": "user"
 }
