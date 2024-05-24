@@ -31,5 +31,5 @@ jobs:
 
     - name: Deploy to Vercel
       run: |
-        cd services/user
+        cd services/room
         vercel --prod --token ${{ secrets.VERCEL_TOKEN }} --scope ${{ secrets.VERCEL_TEAM }} --yes
