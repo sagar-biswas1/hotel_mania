@@ -29,6 +29,8 @@ jobs:
         yarn build
 
     - name: Run Prisma Migrations
+      env:
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
       run: |
         cd services/user
         yarn migrate:prod
