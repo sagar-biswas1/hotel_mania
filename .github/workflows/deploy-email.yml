@@ -36,6 +36,17 @@ jobs:
         yarn migrate:prod
 
     - name: Deploy to Vercel
+      env:
+        DATABASE_URL: ${{ secrets.DATABASE_URL_EMAIL }}
+        PORT: ${{ secrets.PORT_EMAIL }}
+        SERVICE_NAME: ${{ secrets.SERVICE_NAME_EMAIL }}
+        DEFAULT_SENDER_EMAIL: ${{ secrets.DEFAULT_SENDER_EMAIL }}
+        QUEUE_URL: ${{ secrets.QUEUE_URL_EMAIL }}
+        SMTP_HOST: ${{ secrets.SMTP_HOST_EMAIL }}
+        SMTP_PORT: ${{ secrets.SMTP_PORT_EMAIL }}
+        SMTP_USERNAME: ${{ secrets.SMTP_USERNAME_EMAIL }}
+        SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD_EMAIL }}
+        ALLOWED_ORIGINS: ${{ secrets.ALLOWED_ORIGINS_EMAIL }}
       run: |
         cd services/email
         vercel --prod --token ${{ secrets.VERCEL_TOKEN }} --scope ${{ secrets.VERCEL_TEAM }} --yes

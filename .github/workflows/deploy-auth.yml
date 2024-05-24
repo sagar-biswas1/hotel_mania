@@ -41,6 +41,8 @@ jobs:
         JWT_SECRET: ${{ secrets.JWT_SECRET }}
         ALLOWED_ORIGINS: ${{ secrets.ALLOWED_ORIGINS }}
         BASE_URL_AUTH: ${{ secrets.BASE_URL_AUTH }}
+        USER_SERVICE_URL: ${{ secrets.USER_ENDPOINT }}
+        EMAIL_SERVICE_URL: ${{ secrets.EMAIL_ENDPOINT }}
       run: |
         cd services/auth
         vercel --prod --token ${{ secrets.VERCEL_TOKEN }} --scope ${{ secrets.VERCEL_TEAM }} --yes

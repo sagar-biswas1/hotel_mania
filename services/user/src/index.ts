@@ -18,7 +18,7 @@ app.use(cors());
 app.use(morgan("dev"));
 
 app.get("/health", (_req, res) => {
-  res.status(200).json({ status: "HEllO , User service is up....." });
+  res.status(200).json({ status: "HEllO , User service is up......." });
 });
 
 app.use((req, res, next) => {
