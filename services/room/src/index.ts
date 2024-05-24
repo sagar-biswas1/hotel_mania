@@ -32,7 +32,7 @@ app.use(bodyParser.json());
 
 //health
 app.get('/health', (_req, res) => {
-	res.status(200).json({ status: 'UP' });
+	res.status(200).json({ status: 'UP....' });
 });
 
 app.use((req, res, next) => {
