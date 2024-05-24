@@ -3,7 +3,7 @@ name: Deploy User Service
 on:
   push:
     paths:
-      - 'services/user/**'
+      - 'api-gateway/**'
 
 jobs:
   deploy:
@@ -20,22 +20,15 @@ jobs:
 
     - name: Install dependencies
       run: |
-        cd services/user
+        cd api-gateway
         yarn install
 
     - name: Build project
       run: |
-        cd services/user
+        cd api-gateway
         yarn build
-
-    - name: Run Prisma Migrations
-      env:
-        DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      run: |
-        cd services/user
-        yarn migrate:prod
 
     - name: Deploy to Vercel
       run: |
-        cd services/user
+        cd api-gateway
         vercel --prod --token ${{ secrets.VERCEL_TOKEN }} --scope ${{VERCEL_TEAM}} --confirm

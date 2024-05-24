@@ -27,14 +27,15 @@ app.use('/api', limiter);
 app.use(morgan('dev'));
 app.use(express.json());
 
+// health check
+app.get('/health', (_req, res) => {
+	res.json({ message: 'API Gateway is running well' });
+});
+
 // routes
 configureRoutes(app);
 
 
-// health check
-app.get('/health', (_req, res) => {
-	res.json({ message: 'API Gateway is running' });
-});
 
 // 404 handler
 app.use((_req, res) => {

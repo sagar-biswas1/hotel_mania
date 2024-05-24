@@ -49,8 +49,7 @@ export const getMiddlewares = (names: string[]) => {
 
 export const configureRoutes = (app: Express) => {
   Object.entries(config.services).forEach(([_name, service]) => {
-    const hostname = service.url as string;
-
+    const hostname = process.env[`${_name.toUpperCase()}_ENDPOINT`] || service.url as string;
     service.routes.forEach((route) => {
       route.methods.forEach((method) => {
         const endpoint = `/api${route.path}`;
