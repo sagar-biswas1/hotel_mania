@@ -1,9 +1,9 @@
-name: Deploy User Service
+name: Deploy Auth Service
 
 on:
   push:
     paths:
-      - 'services/user/**'
+      - 'services/auth/**'
 
 jobs:
   deploy:
@@ -20,22 +20,22 @@ jobs:
 
     - name: Install dependencies
       run: |
-        cd services/user
+        cd services/auth
         yarn install
 
     - name: Build project
       run: |
-        cd services/user
+        cd services/auth
         yarn build
 
     - name: Run Prisma Migrations
       env:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
       run: |
-        cd services/user
+        cd services/auth
         yarn migrate:prod
 
     - name: Deploy to Vercel
       run: |
-        cd services/user
+        cd services/auth
         vercel --prod --token ${{ secrets.VERCEL_TOKEN }} --scope ${{ secrets.VERCEL_TEAM }} --yes
