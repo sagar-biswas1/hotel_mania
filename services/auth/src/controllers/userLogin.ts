@@ -1,8 +1,8 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { Response, Request, NextFunction } from 'express';
-import prisma from '@/prisma';
-import { UserLoginSchema } from '@/schemas';
+import prisma from '../prisma';
+import { UserLoginSchema } from '../schemas';
 import { LoginAttempt } from '@prisma/client';
 
 type LoginHistory = {

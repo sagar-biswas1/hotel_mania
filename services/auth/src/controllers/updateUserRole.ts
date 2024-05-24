@@ -1,5 +1,5 @@
 import { Response, Request, NextFunction } from "express";
-import prisma from "@/prisma";
+import prisma from "../prisma";
 
 // Controller to update user role
 const updateUserRole = async (req: Request, res: Response, next: NextFunction) => {

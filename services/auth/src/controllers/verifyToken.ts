@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import prisma from '@/prisma';
-import { AccessTokenSchema } from '@/schemas';
+import prisma from '../prisma';
+import { AccessTokenSchema } from '../schemas';
 
 const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
 	try {
