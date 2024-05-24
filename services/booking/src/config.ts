@@ -4,13 +4,13 @@ dotenv.config({
 });
 
 export const EMAIL_SERVICE =
-	process.env.EMAIL_SERVICE_URL || 'http://localhost:4005';
+	process.env.EMAIL_SERVICE_URL || 'https://email-three-phi.vercel.app';
 
 
-export const UPDATE_ROOM_AVAILABLE_DATES = process.env.UPDATE_ROOM_AVAILABLE_DATES_URL ||'http://localhost:4010/room-availability';
+export const UPDATE_ROOM_AVAILABLE_DATES = process.env.UPDATE_ROOM_AVAILABLE_DATES_URL ||'https://room-iota-one.vercel.app/room-availability';
 
 
-export const ROOM_DETAILS = process.env.GET_ROOM_DETAILS ||'http://localhost:4010/room';
+export const ROOM_DETAILS = process.env.GET_ROOM_DETAILS ||'https://room-iota-one.vercel.app/room';
 
 
 export const QUEUE_URL = process.env.QUEUE_URL || 'amqp://localhost';
