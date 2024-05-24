@@ -43,13 +43,13 @@ app.use((req, res, next) => {
 	  : [];
   
 	const origin = req.headers.origin || "";
-	console.log(req.headers)
-	console.log(allowedOrigins, {origin});
+	console.log("hello bro",req.headers)
+	console.log("hello bro->",allowedOrigins, {origin});
 	if (allowedOrigins.includes(origin)) {
 	  res.setHeader("Access-Control-Allow-Origin", origin);
 	  next();
 	} else {
-	  res.status(403).json({ message: "Forbidden" });
+	  res.status(403).json({ message: "Forbidden..." });
 	}
   });
 // Routes

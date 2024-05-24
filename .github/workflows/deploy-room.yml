@@ -30,6 +30,9 @@ jobs:
 
 
     - name: Deploy to Vercel
+      env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL_ROOM }}
+          ALLOWED_ORIGINS: ${{ secrets.ALLOWED_ORIGINS }}
       run: |
         cd services/room
         vercel --prod --token ${{ secrets.VERCEL_TOKEN }} --scope ${{ secrets.VERCEL_TEAM }} --yes
