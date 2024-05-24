@@ -16,7 +16,7 @@ export const createHandler = (
         Object.keys(req.params).forEach((param) => {
           url = url.replace(`:${param}`, req.params[param]);
         });
-      console.log({ url });
+      // console.log({ url });
       const { data } = await axios({
         method,
         url,
