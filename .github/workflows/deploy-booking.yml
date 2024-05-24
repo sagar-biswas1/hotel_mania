@@ -1,0 +1,35 @@
+name: Deploy Booking Service
+
+on:
+  push:
+    paths:
+      - 'services/booking/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20.12.0'
+
+    - name: Install dependencies
+      run: |
+        cd services/booking
+        yarn install
+
+    - name: Build project
+      run: |
+        cd services/booking
+        yarn build
+
+
+    - name: Deploy to Vercel
+      run: |
+        cd services/booking
+        vercel --prod --token ${{ secrets.VERCEL_TOKEN }} --scope ${{ secrets.VERCEL_TEAM }} --yes
