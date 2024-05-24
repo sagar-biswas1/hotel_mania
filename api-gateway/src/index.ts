@@ -29,7 +29,7 @@ app.use(express.json());
 
 // health check
 app.get('/health', (_req, res) => {
-	res.json({ message: 'API Gateway is running well.............' });
+	res.json({ message: 'API Gateway is running well.............',env:process.env });
 });
 
 // routes
