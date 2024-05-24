@@ -1,6 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 import prisma from "../prisma";
-import { UserCreateSchema } from "@/schemas";
+import { UserCreateSchema } from "../schemas";
 import bcrypt from "bcryptjs";
 import axios from "axios";
 import { EMAIL_SERVICE, USER_SERVICE } from "../config";
