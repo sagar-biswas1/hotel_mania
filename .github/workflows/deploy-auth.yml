@@ -36,6 +36,11 @@ jobs:
         yarn migrate:prod
 
     - name: Deploy to Vercel
+      env:
+        DATABASE_URL: ${{ secrets.DATABASE_URL_AUTH }}
+        JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        ALLOWED_ORIGINS: ${{ secrets.ALLOWED_ORIGINS }}
+        BASE_URL_AUTH: ${{ secrets.BASE_URL_AUTH }}
       run: |
         cd services/auth
         vercel --prod --token ${{ secrets.VERCEL_TOKEN }} --scope ${{ secrets.VERCEL_TEAM }} --yes

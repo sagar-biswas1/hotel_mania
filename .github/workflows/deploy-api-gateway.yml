@@ -29,6 +29,12 @@ jobs:
         yarn build
 
     - name: Deploy to Vercel
+      env:
+        AUTH_ENDPOINT: ${{ secrets.AUTH_ENDPOINT }}
+        API_GATEWAY_URL: ${{ secrets.API_GATEWAY_URL }}
+        ROOM_ENDPOINT: ${{ secrets.ROOM_ENDPOINT }}
+        BOOKING_ENDPOINT: ${{ secrets.BOOKING_ENDPOINT }}
+        USER_ENDPOINT: ${{ secrets.USER_ENDPOINT }}
       run: |
         cd api-gateway
         vercel --prod --token ${{ secrets.VERCEL_TOKEN }} --scope ${{ secrets.VERCEL_TEAM }} --yes

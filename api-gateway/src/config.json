@@ -62,7 +62,7 @@
             ]
         },
         "auth": {
-            "url": "https://auth-liard-three.vercel.app",
+            "url": "http://localhost:4003",
             "routes": [
               {
                 "path": "/auth/register",
