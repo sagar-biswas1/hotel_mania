@@ -9,7 +9,7 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
     if (!parsedBody.success) {
       return res.status(400).json({ message: parsedBody.error.errors });
     }
-    console.log("body ", req.body);
+  
     // check if the authUserId already exists
     const existingUser = await prisma.user.findUnique({
       where: { authUserId: parsedBody.data.authUserId },
@@ -22,7 +22,7 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
     const user = await prisma.user.create({
       data: parsedBody.data,
     });
-console.log({ message: "User created", user})
+
     return res.status(201).json(user);
   } catch (error) {
     next(error);
