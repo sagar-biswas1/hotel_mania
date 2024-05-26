@@ -36,23 +36,22 @@ app.get('/health', (_req, res) => {
 	res.status(200).json({ status: 'UP....' });
 });
 
-// app.use((req, res, next) => {
-// 	const ALLOWED_ORIGINS_STR = process.env.ALLOWED_ORIGINS;
+app.use((req, res, next) => {
+	const ALLOWED_ORIGINS_STR = process.env.ALLOWED_ORIGINS;
   
-// 	const allowedOrigins = ALLOWED_ORIGINS_STR
-// 	  ? ALLOWED_ORIGINS_STR.split(",").map(url=>url.trim())
-// 	  : [];
+	const allowedOrigins = ALLOWED_ORIGINS_STR
+	  ? ALLOWED_ORIGINS_STR.split(",").map(url=>url.trim())
+	  : [];
   
-// 	const origin = req.headers.origin || "";
-// 	console.log("hello bro",req.headers)
-// 	console.log("hello bro->",allowedOrigins, {origin});
-// 	if (allowedOrigins.includes(origin)) {
-// 	  res.setHeader("Access-Control-Allow-Origin", origin);
-// 	  next();
-// 	} else {
-// 	  res.status(403).json({ message: "Forbidden..." });
-// 	}
-//   });
+	const origin = req.headers.origin || "";
+  
+	if (allowedOrigins.includes(origin)) {
+	  res.setHeader("Access-Control-Allow-Origin", origin);
+	  next();
+	} else {
+	  res.status(403).json({ message: "Forbidden to access room service." });
+	}
+  });
 
 
 // app.use((req, res, next) => {
