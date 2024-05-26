@@ -4,6 +4,10 @@
 
 Brief description of your project, what it does, and any other relevant information.
 
+## For details about the project
+
+For more detailed documentation and project updates, visit the [Hotel Booking System Notion Page](https://chambray-pancake-282.notion.site/Hotel_mania-909decc561fd4c93b617a57be9630871).
+
 ## Prerequisites
 
 Before you begin, ensure you have met the following requirements:
@@ -58,3 +62,17 @@ Create a new branch (git checkout -b feature-branch).
 - Make your changes and commit them (git commit -m 'Add some feature').
 - Push to the branch (git push origin feature-branch).
 - Open a Pull Request.
+
+
+
+### Initially this project is deployed to the vercel
+## Deployment guide
+- Add vercel token as VERCEL_TOKEN in github ation secret.
+- Add vercel team name as VERCEL_TEAM in github ation secret.
+- Add  env of your services in github ation secret followed by workflows yml files.
+
+You just push or marge to main branch services will be automatically deployed .
+
+
+[note: This project is under continuous development]
+

@@ -2,6 +2,8 @@ name: Deploy Api-gateway Service
 
 on:
   push:
+    branches:
+      - main  #
     paths:
       - 'api-gateway/**'
 

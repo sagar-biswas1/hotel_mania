@@ -2,6 +2,8 @@ name: Deploy Email Service
 
 on:
   push:
+    branches:
+      - main  #
     paths:
       - 'services/email/**'
 
