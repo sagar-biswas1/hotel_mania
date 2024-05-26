@@ -13,6 +13,7 @@ import sendToQueue from "../queue";
 const createBooking = async (req: Request, res: Response): Promise<void> => {
   try {
     const newBody = { ...req.body };
+    console.log("hello",`${ROOM_DETAILS}/${newBody.roomID}`)
     const { data } = await axios.get(`${ROOM_DETAILS}/${newBody.roomID}`, {
       headers: {
         ip: req.ip,
@@ -20,6 +21,7 @@ const createBooking = async (req: Request, res: Response): Promise<void> => {
         origin: process.env.BASE_URL_BOOKING,
       },
     });
+    console.log("world")
     // newBody.bookingDate = new Date(newBody.bookingDate).toISOString();
     // newBody.checkInDate = new Date(newBody.checkInDate).toISOString();
     // newBody.checkOutDate = new Date(newBody.checkOutDate).toISOString();
@@ -81,7 +83,7 @@ const createBooking = async (req: Request, res: Response): Promise<void> => {
     sendToQueue("send-email", JSON.stringify(savedBooking));
     res.status(201).json(savedBooking);
   } catch (error) {
-    console.log(error);
+    //console.log(error);
     if (error instanceof z.ZodError) {
       // Zod validation error
       res.status(400).json({ message: error.errors });

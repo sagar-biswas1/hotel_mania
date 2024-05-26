@@ -7,6 +7,7 @@ import { z } from "zod";
 // Get a specific room by ID
  const getRoomById = async (req: Request, res: Response) => {
     try {
+      console.log("Room")
       const { id } = req.params;
       const room = await Room.findById(id);
   

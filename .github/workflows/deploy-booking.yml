@@ -36,6 +36,10 @@ jobs:
         QUEUE_URL: ${{ secrets.QUEUE_URL_EMAIL }}
         UPDATE_ROOM_AVAILABLE_DATES: ${{ secrets.UPDATE_ROOM_AVAILABLE_DATES }}
         BASE_URL_BOOKING: ${{ secrets.BOOKING_ENDPOINT }}
+        EMAIL_SERVICE_URL: ${{ secrets.EMAIL_SERVICE_URL }}
+        UPDATE_ROOM_AVAILABLE_DATES_URL: ${{ secrets.UPDATE_ROOM_AVAILABLE_DATES_URL }}
+        GET_ROOM_DETAILS: ${{ secrets.GET_ROOM_DETAILS }}
+        QUEUE_URL: ${{ secrets.QUEUE_URL }}
       run: |
         cd services/booking
         vercel --prod --token ${{ secrets.VERCEL_TOKEN }} --scope ${{ secrets.VERCEL_TEAM }} --yes
