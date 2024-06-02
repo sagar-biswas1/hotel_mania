@@ -1,0 +1,344 @@
+openapi: 3.0.0
+info:
+  title: Room Service API
+  description: API for managing rooms, including fetching, adding, updating, and deleting room information.
+  version: 1.0.0
+  contact:
+    email: mr.oshanbiswas@gmail.com
+servers:
+  - url: http://localhost:4010
+    description: Local server
+  - url: https://room-iota-one.vercel.app
+    description: Uat server
+tags:
+  - name: Room
+    description: Everything about room
+paths:
+  /health:
+    get:
+      summary: check health
+      tags:
+        - Room
+      operationId: checkHealthOFRoomService
+      responses:
+        '200':
+          description: checking health of Room
+          content:
+            application/json:
+               schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Up
+  /rooms:
+    get:
+      summary: Get all rooms
+      tags:
+        - Room
+      description: Fetch a list of rooms with pagination details. This route is public.
+      operationId: getAllRooms
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+        - name: sortType
+          in: query
+          schema:
+            type: string
+            default: desc
+        - name: sortBy
+          in: query
+          schema:
+            type: string
+            default: updatedAt
+      responses:
+        '200':
+          description: Room data, including room ID, type, description, amenities, and pricing. Pagination details included.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                  page:
+                    type: integer
+                  pageSize:
+                    type: integer
+                  rooms:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Room'
+        '400':
+          description: Error message
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      summary: Add a new room
+      tags:
+        - Room
+      security:
+        - bearerAuth: []
+      description: Add a new room. This route is admin-protected.
+      operationId: addRoom
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                 type: string
+                 example: Delux
+                name:
+                  type: string
+                  example: Jol foring
+                description:
+                  type: string
+                  example: Vel non officia tempore est minus mollitia. Fuga beatae repudiandae id deleniti aliquid aut. Totam excepturi dicta quasi a porro rerum ipsam vel voluptatibus.
+                amenities:
+                  type: array
+                  items:
+                    type: string
+                    example: Air Conditioning
+                  
+                price:
+                  type: number
+                  example: 203
+                capacity:
+                  type: integer
+                  example: 2
+                availability:
+                  type: array
+                  items:
+                    type: string
+                    format: date-time
+                
+      responses:
+        '201':
+          description: Room created with details of the room and related links
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+        '400':
+          $ref: '#/components/responses/bedRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /rooms/{id}:
+    get:
+      summary: Get specific room
+      tags:
+        - Room
+      description: Fetch details of a room by ID. This route is public.
+      operationId: getRoomById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Room data for the specified room ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+        '404':
+          $ref: '#/components/responses/notFound'
+        
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      summary: Update a room
+      tags:
+        - Room
+      security:
+        - bearerAuth: []
+      description: Update information of a room by ID. This route is admin-protected.
+      operationId: updateRoom
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                 type: string
+                 example: Delux
+                name:
+                  type: string
+                  example: Jol foring
+                description:
+                  type: string
+                  example: Vel non officia tempore est minus mollitia. Fuga beatae repudiandae id deleniti aliquid aut. Totam excepturi dicta quasi a porro rerum ipsam vel voluptatibus.
+                amenities:
+                  type: array
+                  items:
+                    type: string
+                    example: Air Conditioning
+                  
+                price:
+                  type: number
+                  example: 203
+                capacity:
+                  type: integer
+                  example: 2
+                availability:
+                  type: array
+                  items:
+                    type: string
+                    format: date-time
+      responses:
+        '200':
+          description: Room updated with details of the updated room and related links
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      summary: Delete a room
+      tags:
+        - Room
+      security:
+        - bearerAuth: []
+      description: Delete a room by ID. This route is admin-protected.
+      operationId: deleteRoom
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No content (Room deleted)
+        '404':
+          $ref: '#/components/responses/notFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    Room:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 66561c420c9a4c8b36e9c411
+        type:
+          type: string
+          example: Delux
+        name:
+          type: string
+          example: Jol foring
+        description:
+          type: string
+          example: Vel non officia tempore est minus mollitia. Fuga beatae repudiandae id deleniti aliquid aut. Totam excepturi dicta quasi a porro rerum ipsam vel voluptatibus.
+        amenities:
+          type: array
+          items:
+            type: string
+            example: Air Conditioning
+          
+        price:
+          type: number
+          example: 203
+        capacity:
+          type: integer
+          example: 2
+        availability:
+          type: array
+          items:
+            type: string
+            format: date-time
+        
+  responses:
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Internal server error
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Unauthorized
+
+    notFound:
+        description: not found
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: room not found
+    bedRequest:
+        description: bed request
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                errors:
+                  type: array               
+                  items:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        example: invalid_type
+                      expected:
+                        type: string
+                        example: string
+                      received:
+                        type: string
+                        example: undefined
+                      path:
+                        type: array
+                        items:
+                          type: string
+                          example: name
+                      message:
+                        type: string
+                        example: Required
