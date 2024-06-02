@@ -1,0 +1,320 @@
+openapi: 3.0.0
+info:
+  title: Booking Service API
+  description: API for managing room bookings, including creating, retrieving, updating, and canceling bookings.
+  version: 1.0.0
+servers:
+  - url: http://localhost:4008
+    description: Local server
+  - url: https://api-gateway-rust.vercel.app
+    description: uat server
+tags:
+  - name: Booking
+paths:
+  /health:
+    get:
+      summary: check health
+      tags:
+        - Booking
+      operationId: checkHealthOFBookingService
+      responses:
+        '200':
+          description: checking health of User
+          content:
+            application/json:
+               schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Up
+  /bookings:
+    post:
+      summary: Create a new booking
+      tags:
+        - Booking
+      security:
+        - bearerAuth: []
+      description: Create a new booking. This route is protected and requires authorization.
+      operationId: createBooking
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                guestID:
+                  type: string
+                  example: "{{userId}}"
+                roomID:
+                  type: string
+                  example: "{{roomId}}"
+                bookingStatus:
+                  type: string
+                  example: pending
+                guestName:
+                  type: string
+                  example: "{{userName}}"
+                guestCellNo:
+                  type: string
+                  example: "123456"
+                guestEmail:
+                  type: string
+                  example: "{{email}}"
+                totalCost:
+                  type: number
+                  example: 100
+                paymentID:
+                  type: string
+                  example: "{{$guid}}"
+                bookingDate:
+                  type: string
+                  format: date-time
+                  example: "{{$isoTimestamp}}"
+                checkInDate:
+                  type: string
+                  format: date
+                  example: "2024-05-27"
+                checkOutDate:
+                  type: string
+                  format: date
+                  example: "2024-05-28"
+      responses:
+        '201':
+          description: Booking created with details of the booking and related links
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                 errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                          example: invalid_type
+                        expected:
+                          type: string
+                          example: string
+                        received:
+                          type: string
+                          example: undefined
+                        path:
+                          type: array
+                          items:
+                            type: string
+                            example: accessToken
+                        message:
+                          type: string
+                          example: Required
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+               schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  
+  /bookings/{id}:
+    get:
+      summary: Get a specific booking
+      tags:
+        - Booking
+      security:
+        - bearerAuth: []
+      description: Retrieve details of a specific booking. This route is protected and requires authorization.
+      operationId: getBooking
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Booking data with details of the booking
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+        '404':
+          description: Booking not found
+          
+          $ref: '#/components/responses/notFound'
+        '400':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      summary: Update a booking
+      tags:
+        - Booking
+      security:
+        - bearerAuth: []
+      description: Update details of a specific booking. This route is protected and requires Admin authorization.
+      operationId: updateBooking
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                roomID:
+                  type: string
+                  example: "{{roomId}}"
+                startDate:
+                  type: string
+                  format: date
+                  example: "2024-05-27"
+                endDate:
+                  type: string
+                  format: date
+                  example: "2024-05-28"
+                guests:
+                  type: number
+                  example: 2
+      responses:
+        '200':
+          description: Booking updated with details of the updated booking
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+        '404':
+          $ref: '#/components/responses/notFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      summary: Cancel a booking
+      tags:
+        - Booking
+      security:
+        - bearerAuth: []
+      description: Cancel a specific booking. This route is protected and requires authorization.
+      operationId: cancelBooking
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No content (Booking canceled)
+        
+        '400':
+          description: Booking not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Booking not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  schemas:
+    Booking:
+      type: object
+      properties:
+        id:
+          type: string
+        guestID:
+          type: string
+        roomID:
+          type: string
+        bookingStatus:
+          type: string
+        guestName:
+          type: string
+        guestCellNo:
+          type: string
+        guestEmail:
+          type: string
+        totalCost:
+          type: number
+        paymentID:
+          type: string
+        bookingDate:
+          type: string
+          format: date-time
+        checkInDate:
+          type: string
+          format: date
+        checkOutDate:
+          type: string
+          format: date
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  responses:
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Internal server error
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Unauthorized
+    notFound:
+        description: not found
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Booking not found

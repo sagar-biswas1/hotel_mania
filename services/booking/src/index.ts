@@ -5,8 +5,10 @@ import bodyParser from 'body-parser';
 import { createBooking, deleteBooking, getBookings,updateBooking,getBookingById } from './controllers';
 import dotenv from 'dotenv';
 
-
-
+const swaggerUI = require("swagger-ui-express");
+const YAML = require("yamljs");
+const OpenApiValidator = require('express-openapi-validator');
+import path from "path";
 dotenv.config();
 
 const app = express();
@@ -24,10 +26,29 @@ mongoose.connect(process.env.DATABASE_URL || '')
 // Middleware
 app.use(bodyParser.json());
 
+
+
+
 //health
 app.get('/health', (_req, res) => {
 	res.status(200).json({ status: 'UP' });
 });
+
+const enableSwagger = process.env.ENABLE_SWAGGER === 'true';
+console.log({ enableSwagger})
+if (enableSwagger) {
+	console.log("hello")
+  const swaggerPath = path.resolve(__dirname, '..', 'swagger.yaml');
+  const swaggerDoc = YAML.load(swaggerPath);
+  app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDoc));
+
+  app.use(
+    OpenApiValidator.middleware({
+      apiSpec: swaggerPath,
+    }),
+  );
+}
+
 
 app.use((req, res, next) => {
 	const ALLOWED_ORIGINS_STR = process.env.ALLOWED_ORIGINS;
