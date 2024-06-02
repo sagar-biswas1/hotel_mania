@@ -5,7 +5,7 @@ import morgan from "morgan";
 const swaggerUI = require("swagger-ui-express");
 const YAML = require("yamljs");
 const OpenApiValidator = require('express-openapi-validator');
-const swaggerDoc = YAML.load("./swagger.yaml");
+import path from "path";
 import {
   userLogin,
   userRegistration,
@@ -25,12 +25,16 @@ app.get("/health", (_req, res) => {
   res.status(200).json({ status: "UP.." });
 });
 
+
+const swaggerPath = path.resolve(__dirname, '..', 'swagger.yaml');
+//console.log(`Loading Swagger documentation from: ${swaggerPath}`); // Log the file path
+const swaggerDoc = YAML.load(swaggerPath);
+
 app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 
 app.use(
   OpenApiValidator.middleware({
-    apiSpec: './swagger.yaml',
-  
+    apiSpec: swaggerPath,
   }),
 );
 
