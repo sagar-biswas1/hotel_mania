@@ -8,21 +8,23 @@
     "build": "tsc && tsc-alias",
     "migrate:dev": "prisma migrate dev",
     "migrate:prod": "prisma migrate deploy",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "postbuild": "copyfiles swagger.yaml dist/"
   },
   "dependencies": {
     "@prisma/client": "^5.10.1",
     "axios": "^1.6.7",
     "bcryptjs": "^2.4.3",
+    "copyfiles": "^2.4.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.18.2",
+    "express-openapi-validator": "^5.0.4",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
-    "zod": "^3.22.4",
-    "express-openapi-validator": "^5.0.4",
     "swagger-ui-express": "^4.6.3",
-    "yamljs": "^0.3.0"
+    "yamljs": "^0.3.0",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",

@@ -25,18 +25,19 @@ app.get("/health", (_req, res) => {
   res.status(200).json({ status: "UP.." });
 });
 
+const enableSwagger = process.env.ENABLE_SWAGGER === 'true';
 
-const swaggerPath = path.resolve(__dirname, 'swagger.yaml');
-//console.log(`Loading Swagger documentation from: ${swaggerPath}`); // Log the file path
-const swaggerDoc = YAML.load(swaggerPath);
+if (enableSwagger) {
+  const swaggerPath = path.resolve(__dirname, '..', 'swagger.yaml');
+  const swaggerDoc = YAML.load(swaggerPath);
+  app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 
-app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDoc));
-
-app.use(
-  OpenApiValidator.middleware({
-    apiSpec: swaggerPath,
-  }),
-);
+  app.use(
+    OpenApiValidator.middleware({
+      apiSpec: swaggerPath,
+    }),
+  );
+}
 
 app.use((req, res, next) => {
   const ALLOWED_ORIGINS_STR = process.env.ALLOWED_ORIGINS;
