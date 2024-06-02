@@ -26,7 +26,7 @@ app.get("/health", (_req, res) => {
 });
 
 
-const swaggerPath = path.resolve(__dirname, '..', 'swagger.yaml');
+const swaggerPath = path.resolve(__dirname, 'swagger.yaml');
 //console.log(`Loading Swagger documentation from: ${swaggerPath}`); // Log the file path
 const swaggerDoc = YAML.load(swaggerPath);
 
