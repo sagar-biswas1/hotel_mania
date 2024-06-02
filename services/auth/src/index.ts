@@ -2,6 +2,10 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import morgan from "morgan";
+const swaggerUI = require("swagger-ui-express");
+const YAML = require("yamljs");
+const OpenApiValidator = require('express-openapi-validator');
+const swaggerDoc = YAML.load("./swagger.yaml");
 import {
   userLogin,
   userRegistration,
@@ -20,6 +24,15 @@ app.use(morgan("dev"));
 app.get("/health", (_req, res) => {
   res.status(200).json({ status: "UP.." });
 });
+
+app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDoc));
+
+app.use(
+  OpenApiValidator.middleware({
+    apiSpec: './swagger.yaml',
+  
+  }),
+);
 
 app.use((req, res, next) => {
   const ALLOWED_ORIGINS_STR = process.env.ALLOWED_ORIGINS;
