@@ -9,7 +9,10 @@ import {
   getUsers,
   deleteUser,
 } from "./controllers";
-
+const swaggerUI = require("swagger-ui-express");
+const YAML = require("yamljs");
+const OpenApiValidator = require('express-openapi-validator');
+import path from "path";
 dotenv.config();
 
 const app = express();
@@ -20,6 +23,21 @@ app.use(morgan("dev"));
 app.get("/health", (_req, res) => {
   res.status(200).json({ status: "HEllO , User service is up......." });
 });
+
+
+const enableSwagger = process.env.ENABLE_SWAGGER === 'true';
+
+if (enableSwagger) {
+  const swaggerPath = path.resolve(__dirname, '..', 'swagger.yaml');
+  const swaggerDoc = YAML.load(swaggerPath);
+  app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDoc));
+
+  app.use(
+    OpenApiValidator.middleware({
+      apiSpec: swaggerPath,
+    }),
+  );
+}
 
 app.use((req, res, next) => {
   const ALLOWED_ORIGINS_STR = process.env.ALLOWED_ORIGINS;
