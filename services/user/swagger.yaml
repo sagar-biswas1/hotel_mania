@@ -1,0 +1,225 @@
+openapi: 3.0.3
+info:
+  title: User Service API
+  description: API for managing users including fetching, updating, and deleting user information.
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: mr.oshanbiswas@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+  
+servers:
+  - url: http://localhost:4000
+    description: Local server
+  - url: https://user-drab.vercel.app
+    description: UAT server  
+tags:
+  - name: User
+    description: Everything about user service
+paths:
+  /health:
+    get:
+      summary: check health
+      tags:
+        - User
+      operationId: checkHealthOFUserService
+      responses:
+        '200':
+          description: checking health of User
+          content:
+            application/json:
+               schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Up
+  /users:
+    get:
+      summary: Get all users
+      tags:
+        - User
+      security:
+        - bearerAuth: []
+      description: Fetch a list of users with pagination details. This route is admin-protected.
+      operationId: getAllUsers
+      responses:
+        '200':
+          description: List of users with pagination details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                  page:
+                    type: integer
+                  pageSize:
+                    type: integer
+                  users:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /users/{id}:
+    get:
+      summary: Get user by ID
+      tags:
+        - User
+      security:
+        - bearerAuth: []
+      description: Fetch details of a user by ID. This route is protected.
+      operationId: getUserById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User data with details of the user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          $ref: '#/components/responses/notFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    put:
+      summary: Update user information
+      tags:
+        - User
+      security:
+        - bearerAuth: []
+      description: Update information of a user by ID. This route is protected.
+      operationId: updateUser
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                 name:
+                  type: string
+                 address:
+                   type: string
+                 phone:
+                   type: string
+                 dateOfBirth:
+                   type: string
+                   format: date-time
+      responses:
+        '200':
+          description: User information updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        
+        
+        '404':
+          $ref: '#/components/responses/notFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      summary: Delete a user
+      tags:
+        - User
+      security:
+        - bearerAuth: []
+      description: Delete a user by ID. This route is admin-protected.
+      operationId: deleteUser
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: User deleted
+        '404':
+          description: User not found
+        '401':
+          description: Unauthorized
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        authUserId:
+          type: string
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+        address:
+          type: string
+        phone:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+  responses:
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Internal server error
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Unauthorized
+    notFound:
+        description: not found
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: User not found
